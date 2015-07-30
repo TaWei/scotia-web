@@ -6,7 +6,7 @@ var path = require('path');
 var cordovaCli = require('cordova');
 var spawn = process.platform === 'win32' ? require('win-spawn') : require('child_process').spawn;
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
@@ -153,7 +153,7 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath: /\.\.\//
       },
       sass: {
         src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
@@ -161,7 +161,7 @@ module.exports = function (grunt) {
       }
     },
 
-    
+
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
       options: {
@@ -190,7 +190,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
 
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
@@ -381,10 +381,12 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js': ['coverage']
         },
         coverageReporter: {
-          reporters: [
-            { type: 'html', dir: 'coverage/' },
-            { type: 'text-summary' }
-          ]
+          reporters: [{
+            type: 'html',
+            dir: 'coverage/'
+          }, {
+            type: 'text-summary'
+          }]
         }
       },
       unit: {
@@ -415,8 +417,8 @@ module.exports = function (grunt) {
   });
 
   // Register tasks for all Cordova commands
-  _.functions(cordovaCli).forEach(function (name) {
-    grunt.registerTask(name, function () {
+  _.functions(cordovaCli).forEach(function(name) {
+    grunt.registerTask(name, function() {
       this.args.unshift(name.replace('cordova:', ''));
       // Handle URL's being split up by Grunt because of `:` characters
       if (_.contains(this.args, 'http') || _.contains(this.args, 'https')) {
@@ -427,13 +429,13 @@ module.exports = function (grunt) {
       var cmd = path.resolve('./node_modules/cordova/bin', exec);
       var flags = process.argv.splice(3);
       var child = spawn(cmd, this.args.concat(flags));
-      child.stdout.on('data', function (data) {
+      child.stdout.on('data', function(data) {
         grunt.log.writeln(data);
       });
-      child.stderr.on('data', function (data) {
+      child.stderr.on('data', function(data) {
         grunt.log.error(data);
       });
-      child.on('close', function (code) {
+      child.on('close', function(code) {
         code = code ? false : true;
         done(code);
       });
@@ -446,7 +448,7 @@ module.exports = function (grunt) {
   // browser tab to see the changes. Technically ripple runs `cordova prepare` on browser
   // refreshes, but at this time you would need to re-run the emulator to see changes.
   grunt.registerTask('ripple', ['wiredep', 'newer:copy:app', 'ripple-emulator']);
-  grunt.registerTask('ripple-emulator', function () {
+  grunt.registerTask('ripple-emulator', function() {
     grunt.config.set('watch', {
       all: {
         files: _.flatten(_.pluck(grunt.config.get('watch'), 'files')),
@@ -456,13 +458,13 @@ module.exports = function (grunt) {
 
     var cmd = path.resolve('./node_modules/ripple-emulator/bin', 'ripple');
     var child = spawn(cmd, ['emulate']);
-    child.stdout.on('data', function (data) {
+    child.stdout.on('data', function(data) {
       grunt.log.writeln(data);
     });
-    child.stderr.on('data', function (data) {
+    child.stderr.on('data', function(data) {
       grunt.log.error(data);
     });
-    process.on('exit', function (code) {
+    process.on('exit', function(code) {
       child.kill('SIGINT');
       process.exit(code);
     });
@@ -472,7 +474,7 @@ module.exports = function (grunt) {
 
   // Dynamically configure `karma` target of `watch` task so that
   // we don't have to run the karma test server as part of `grunt serve`
-  grunt.registerTask('watch:karma', function () {
+  grunt.registerTask('watch:karma', function() {
     var karma = {
       files: ['<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js', '<%= yeoman.test %>/spec/**/*.js'],
       tasks: ['newer:jshint:test', 'karma:unit:run']
@@ -486,8 +488,10 @@ module.exports = function (grunt) {
     var done = this.async();
     var script = path.resolve('./node_modules/ionic/bin/', 'ionic');
     var flags = process.argv.splice(3);
-    var child = spawn(script, this.args.concat(flags), { stdio: 'inherit' });
-    child.on('close', function (code) {
+    var child = spawn(script, this.args.concat(flags), {
+      stdio: 'inherit'
+    });
+    child.on('close', function(code) {
       code = code ? false : true;
       done(code);
     });
@@ -502,7 +506,7 @@ module.exports = function (grunt) {
     'watch:karma'
   ]);
 
-  grunt.registerTask('serve', function (target) {
+  grunt.registerTask('serve', function(target) {
     if (target === 'compress') {
       return grunt.task.run(['compress', 'ionic:serve']);
     }
@@ -549,8 +553,7 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
-  grunt.registerTask('coverage', 
-    ['karma:continuous',
+  grunt.registerTask('coverage', ['karma:continuous',
     'connect:coverage:keepalive'
   ]);
 
