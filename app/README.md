@@ -1,5 +1,16 @@
 This is an addon starter template for the [Ionic Framework](http://ionicframework.com/).
 
+## Installation
+npm install -g grunt-cli
+npm install -g grunt
+npm install -g bower
+npm install -g cordova
+npm install -g ionic
+
+install git and add to system path
+bower install
+grunt serve
+
 ## How to use this template
 
 *This template does not work on its own*. It is missing the Ionic library, and AngularJS.
